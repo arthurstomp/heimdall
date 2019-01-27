@@ -6,7 +6,7 @@ Heimdall is a combination of Plug and wrapper for JWT encode/decode.
 ```elixir
 def deps do
   [
-    {:heimdall, git: "https://github.com/arthurstomp/heimdall" tag: "1.0"}
+    {:heimdall, git: "https://github.com/arthurstomp/heimdall" tag: "1.0.0"}
   ]
 end
 ```
