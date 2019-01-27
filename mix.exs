@@ -4,7 +4,7 @@ defmodule Heimdall.MixProject do
   def project do
     [
       app: :heimdall,
-      version: "1.0",
+      version: "1.0.0",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       test_coverage: [tool: ExCoveralls],
