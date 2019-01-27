@@ -26,7 +26,7 @@ defmodule Heimdall do
   """
   @spec call(Plug.Conn.t, list) :: Plug.Conn.t
   def call(conn,_opts) do
-    case conn |> extract_jwt |> decode |> IO.inspect do
+    case conn |> extract_jwt |> decode do
       {:ok, claims} -> assign(conn, :jwt_claims, claims)
       _ -> put_status(conn, 401) |> halt
     end
@@ -34,8 +34,7 @@ defmodule Heimdall do
 
   @spec extract_jwt(Plug.Conn.t) :: binary | nil
   defp extract_jwt(conn) do
-    case conn |> authorization_header do
-      {"authorization", raw_jwt} -> raw_jwt |> parse_header
+    case conn |> authorization_header do {"authorization", raw_jwt} -> raw_jwt |> parse_header
       _ -> nil
     end
   end
@@ -66,7 +65,7 @@ defmodule Heimdall do
   """
 	@spec encode(keyword | nil) :: {atom, binary, keyword} | {atom, binary}
   def encode(nil), do: {:error, "cannot encode nil"}
-  def encode(claims), do: Token.generate_and_sign(claims)
+  def encode(claims), do: Token.generate_and_sign(claims, signer())
 
   @doc """
     Decode jwt token.
@@ -88,5 +87,9 @@ defmodule Heimdall do
   """
   @spec decode(binary) :: {atom, keyword | binary}
   def decode(nil), do: {:error, :not_valid}
-  def decode(jwt), do: Token.verify_and_validate(jwt)
+  def decode(jwt), do: Token.verify_and_validate(jwt, signer())
+
+  defp signer do
+    Joken.Signer.create("HS256", Application.get_env(:heimdall, :secret))
+  end
 end
