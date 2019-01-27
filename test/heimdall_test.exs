@@ -16,8 +16,16 @@ defmodule HeimdallTest do
     assert %{"test" => "hello"} = conn.assigns.jwt_claims
   end
 
-  test "it returns Unauthorized" do
+  test "it returns 401 if 'authorization' header isn't present" do
     conn = conn(:get, "/")
+
+    conn = Heimdall.call(conn, @opts)
+    assert conn.status == 401
+  end
+
+  test "it returns 401 if jwt isn't valid" do
+    conn = conn(:get, "/", "")
+           |> put_req_header("authorization", "Bearer: ...")
 
     conn = Heimdall.call(conn, @opts)
     assert conn.status == 401

@@ -26,9 +26,9 @@ defmodule Heimdall do
   """
   @spec call(Plug.Conn.t, list) :: Plug.Conn.t
   def call(conn,_opts) do
-    case conn |> extract_jwt |> decode do
+    case conn |> extract_jwt |> decode |> IO.inspect do
       {:ok, claims} -> assign(conn, :jwt_claims, claims)
-      {:error, _errors} -> put_status(conn, 401) |> halt
+      _ -> put_status(conn, 401) |> halt
     end
   end
 
