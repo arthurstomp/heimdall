@@ -31,4 +31,9 @@ defmodule HeimdallTest do
     conn = Heimdall.call(conn, @opts)
     assert conn.status == 401
   end
+
+  test "it encode/decode claim" do
+    claim = %{test: "test"}
+    assert {:ok, jwt, _} = Heimdall.encode(claim)
+  end
 end

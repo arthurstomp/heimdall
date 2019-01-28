@@ -2,7 +2,8 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
-config :heimdall, secret: "SECRET"
+#config :heimdall, secret: "SECRET"
+config :joken, default_signer: "SECRET"
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this

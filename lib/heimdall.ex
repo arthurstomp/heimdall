@@ -65,7 +65,7 @@ defmodule Heimdall do
   """
 	@spec encode(keyword | nil) :: {atom, binary, keyword} | {atom, binary}
   def encode(nil), do: {:error, "cannot encode nil"}
-  def encode(claims), do: Token.generate_and_sign(claims, signer())
+  def encode(claims), do: Token.generate_and_sign(claims)
 
   @doc """
     Decode jwt token.
@@ -87,9 +87,5 @@ defmodule Heimdall do
   """
   @spec decode(binary) :: {atom, keyword | binary}
   def decode(nil), do: {:error, :not_valid}
-  def decode(jwt), do: Token.verify_and_validate(jwt, signer())
-
-  defp signer do
-    Joken.Signer.create("HS256", Application.get_env(:heimdall, :secret))
-  end
+  def decode(jwt), do: Token.verify_and_validate(jwt)
 end
