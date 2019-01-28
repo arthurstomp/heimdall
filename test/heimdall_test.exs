@@ -25,6 +25,7 @@ defmodule HeimdallTest do
 
   test "it returns 401 if jwt isn't valid" do
     conn = conn(:get, "/", "")
+           |> put_req_header("access", "hello")
            |> put_req_header("authorization", "Bearer: ...")
 
     conn = Heimdall.call(conn, @opts)

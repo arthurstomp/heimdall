@@ -42,7 +42,7 @@ defmodule Heimdall do
   @spec authorization_header(Plug.Conn.t) :: tuple
   defp authorization_header(conn) do
     conn.req_headers
-    |> Enum.filter(&({"authorization", _} = &1))
+    |> Enum.filter(&(elem(&1, 0) == "authorization"))
     |> List.first
   end
 
