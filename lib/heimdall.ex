@@ -22,13 +22,13 @@ defmodule Heimdall do
 
 	@doc """
     It assigns extracts jwt claims and assign those to :jwt_claims
-  at conn. Or halts conn with status 401.
+  at conn. Or alts conn with status 401.
   """
   @spec call(Plug.Conn.t, list) :: Plug.Conn.t
   def call(conn,_opts) do
     case conn |> extract_jwt |> decode do
       {:ok, claims} -> assign(conn, :jwt_claims, claims)
-      _ -> conn |> assign(:jwt_claims, nil) |> put_status(conn, 401) |> halt
+      _ -> conn |> assign(:jwt_claims, nil) |> send_resp(401, "unauthorized")
     end
   end
 
